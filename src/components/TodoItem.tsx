@@ -44,17 +44,14 @@ export const TodoItem: React.FC<Props> = ({
     setIsEditing(false);
   };
 
+  // TodoItem.tsx
   const submitEdit = async () => {
     if (!onRename) {
       setIsEditing(false);
-
       return;
     }
 
-    if (submittingRef.current) {
-      return;
-    }
-
+    if (submittingRef.current) return;
     submittingRef.current = true;
 
     const trimmed = title.trim();
@@ -62,21 +59,18 @@ export const TodoItem: React.FC<Props> = ({
     if (trimmed === todo.title.trim()) {
       setIsEditing(false);
       submittingRef.current = false;
-
       return;
     }
 
     if (trimmed.length === 0) {
+      const ok = await onRename(trimmed);
+      if (ok) setIsEditing(false);
       submittingRef.current = false;
-
       return;
     }
 
     const ok = await onRename(trimmed);
-
-    if (ok) {
-      setIsEditing(false);
-    }
+    if (ok) setIsEditing(false);
 
     submittingRef.current = false;
   };
