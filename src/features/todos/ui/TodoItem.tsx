@@ -33,6 +33,7 @@ export const TodoItem: React.FC<Props> = ({ todo, isLoading }) => {
 
   const isCompleted = useMemo(() => {
     const fromState = state.todos.find(t => t.id === id)?.completed;
+
     return fromState ?? todo.completed;
   }, [state.todos, id, todo.completed]);
 

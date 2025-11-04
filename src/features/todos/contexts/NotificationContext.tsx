@@ -1,4 +1,10 @@
-import React, { createContext, useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { ErrorType } from '../model/types';
 
 type NotificationMessage = string | ErrorType;
@@ -67,7 +73,11 @@ export const NotificationProvider = ({
     setMessage('');
   }, [clearTimers]);
 
-  useEffect(() => () => clearTimers(), []);
+  useEffect(() => {
+    return () => {
+      clearTimers();
+    };
+  }, [clearTimers]);
 
   return (
     <NotificationContext.Provider

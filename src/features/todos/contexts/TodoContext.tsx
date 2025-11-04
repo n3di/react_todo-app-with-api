@@ -58,17 +58,25 @@ export const TodosProvider = ({ children }: { children: ReactNode }) => {
 
       try {
         const fetched = await getTodos();
-        if (!isMounted) return;
+
+        if (!isMounted) {
+          return;
+        }
 
         dispatch({ type: ACTIONS.SET_TODOS, payload: fetched });
         dispatch({ type: ACTIONS.SET_ERROR, payload: false });
       } catch {
-        if (!isMounted) return;
+        if (!isMounted) {
+          return;
+        }
 
         dispatch({ type: ACTIONS.SET_ERROR, payload: true });
         showNotification(ErrorType.LOAD_TODOS);
       } finally {
-        if (!isMounted) return;
+        if (!isMounted) {
+          return;
+        }
+
         dispatch({ type: ACTIONS.SET_LOADING, payload: false });
       }
     })();
@@ -76,7 +84,7 @@ export const TodosProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [showNotification]);
 
   const handleAddTodo = async (todo: TodoBase) => {
     const tempTodo: Todo = { ...todo, id: 0 };
@@ -99,6 +107,7 @@ export const TodosProvider = ({ children }: { children: ReactNode }) => {
     try {
       await deleteTodo(id);
       dispatch({ type: ACTIONS.DELETE_TODO, payload: { id } });
+
       return true;
     } catch {
       return false;
@@ -112,6 +121,7 @@ export const TodosProvider = ({ children }: { children: ReactNode }) => {
     title: string,
   ): Promise<boolean> => {
     const prev = state.todos;
+
     setProcessingIds(p => [...p, id]);
 
     dispatch({
@@ -121,10 +131,12 @@ export const TodosProvider = ({ children }: { children: ReactNode }) => {
 
     try {
       await renameTodo(id, title);
+
       return true;
     } catch {
       dispatch({ type: ACTIONS.SET_TODOS, payload: prev });
       showNotification(ErrorType.UPDATE_TODO);
+
       return false;
     } finally {
       setProcessingIds(p => p.filter(x => x !== id));
@@ -135,6 +147,7 @@ export const TodosProvider = ({ children }: { children: ReactNode }) => {
     const newCompleted = !completed;
 
     const mySeq = (toggleSeqRef.current.get(id) ?? 0) + 1;
+
     toggleSeqRef.current.set(id, mySeq);
 
     setProcessingIds(p => [...p, id]);

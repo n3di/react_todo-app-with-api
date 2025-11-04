@@ -23,18 +23,22 @@ export const TodoEdit: React.FC<Props> = ({ title, id }) => {
 
       if (!ok) {
         showNotification(ErrorType.DELETE_TODO);
+
         return;
       }
 
       setEditedTodoId(null);
+
       return;
     }
 
     if (newTitle !== title) {
       const ok = await handleRenameTodo(id, newTitle);
+
       if (ok) {
         setEditedTodoId(null);
       }
+
       return;
     }
 
