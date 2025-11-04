@@ -1,5 +1,6 @@
 import React from 'react';
-import { Filter } from '../types/Filter';
+import cn from 'classnames';
+import { Filter } from '../model/types';
 
 export const FilterLink: React.FC<{
   filter: Filter;
@@ -10,7 +11,7 @@ export const FilterLink: React.FC<{
 }> = ({ filter, currentFilter, setFilter, label, dataCy }) => (
   <a
     href={`#/${filter}`}
-    className={`filter__link ${currentFilter === filter ? 'selected' : ''}`}
+    className={cn('filter__link', { selected: currentFilter === filter })}
     data-cy={dataCy}
     onClick={() => setFilter(filter)}
   >
